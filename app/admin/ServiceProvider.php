@@ -15,9 +15,7 @@ use Igniter\Flame\Foundation\Providers\AppServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Log;
 use System\Classes\MailManager;
 use System\Libraries\Assets;
 use System\Models\Settings_model;
@@ -307,8 +305,6 @@ class ServiceProvider extends AppServiceProvider
     protected function registerNavMenuItems()
     {
         AdminMenu::registerCallback(function (Navigation $manager) {
-            Log::info(lang('admin::lang.side_menu.dashboard'));
-            Log::info(lang('admin::lang.side_menu.dashboard', [], 'zh_TW'));
             $manager->registerNavItems([
                 'dashboard' => [
                     'priority' => 0,
