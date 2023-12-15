@@ -1,0 +1,39 @@
+version: '3'
+services:
+  app:
+    image: richarvey/nginx-php-fpm
+    volumes:
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/sites-available/:/etc/nginx/sites-available
+      - ./docker/nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./:/var/www/html
+    ports:
+      - 80:80
+    environment:
+      - APP_URL=http://localhost
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_DATABASE=ti
+      - DB_USERNAME=tasty
+      - DB_PASSWORD=123456
+      - CACHE_DRIVER=redis
+      - REDIS_HOST=redis
+    restart: always
+    depends_on:
+      - db
+  db:
+    image: "mariadb"
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    ports:
+      - 33022:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=a9sdfg9a9sdf
+      - MYSQL_DATABASE=ti
+      - MYSQL_USER=tasty
+      - MYSQL_PASSWORD=123456
+    restart: always
+  redis:
+    image: redis:6
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    restart: always
